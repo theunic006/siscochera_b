@@ -126,6 +126,19 @@ class CompanyController extends Controller
                 'email_verified_at' => now()
             ]);
 
+            // Asignar todos los permisos activos al usuario administrador
+            $allPermissions = \App\Models\Permission::where('is_active', true)->get();
+            foreach ($allPermissions as $permission) {
+                DB::table('user_permissions')->insert([
+                    'user_id' => $adminUser->id,
+                    'permission_id' => $permission->id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            Log::info("Asignados {$allPermissions->count()} permisos al usuario administrador ID: {$adminUser->id}");
+
             DB::commit();
 
             return response()->json([
@@ -233,6 +246,19 @@ class CompanyController extends Controller
                 'estado' => 'ACTIVO',
                 'email_verified_at' => now()
             ]);
+
+            // Asignar todos los permisos activos al usuario administrador
+            $allPermissions = \App\Models\Permission::where('is_active', true)->get();
+            foreach ($allPermissions as $permission) {
+                DB::table('user_permissions')->insert([
+                    'user_id' => $adminUser->id,
+                    'permission_id' => $permission->id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+            
+            Log::info("Registro público: Asignados {$allPermissions->count()} permisos al usuario administrador ID: {$adminUser->id}");
 
             DB::commit();
 
